@@ -376,7 +376,12 @@ void display_serial_number_character(char snumchar);
 void lcd_clear();
 void clear_display_row(byte row_number);
 void lcd_center_print_timed_wpm();
+#endif
 
+#ifdef FEATURE_POTENTIOMETER
+byte pot_value_wpm();
+void command_speed_set(int wpm_set);
+void serial_set_pot_low_high(PRIMARY_SERIAL_CLS * port_to_use);
 #endif
 
 
