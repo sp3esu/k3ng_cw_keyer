@@ -1,5 +1,3 @@
-
-
 /*
 
  K3NG Arduino CW Keyer
@@ -22,13 +20,16 @@
     
 */
 
+// Required by PlatrofmIO
+#include <Arduino.h>
+
 
 #define CODE_VERSION "2021.12.17.01"
 
 #define eeprom_magic_number 41               // you can change this number to have the unit re-initialize EEPROM
 
 #include <stdio.h>
-#include "keyer_hardware.h"
+#include "configuration/keyer_hardware.h"
 
 #if defined(ARDUINO_SAM_DUE)
   #include <SPI.h>
@@ -50,132 +51,132 @@
   #include <EEPROM.h>
 #endif //ARDUINO_SAM_DUE
 
-#if defined(HARDWARE_OPENCWKEYER_MK2)
-  #include "keyer_features_and_options_opencwkeyer_mk2.h"
-#elif defined(HARDWARE_NANOKEYER_REV_B)
-  #include "keyer_features_and_options_nanokeyer_rev_b.h"
-#elif defined(HARDWARE_NANOKEYER_REV_D)
-  #include "keyer_features_and_options_nanokeyer_rev_d.h"
-#elif defined(HARDWARE_OPEN_INTERFACE)
-  #include "keyer_features_and_options_open_interface.h"
-#elif defined(HARDWARE_TINYKEYER)
-  #include "keyer_features_and_options_tinykeyer.h"
-#elif defined(HARDWARE_FK_10)
-  #include "keyer_features_and_options_fk_10.h"
-#elif defined(HARDWARE_FK_11)
-  #include "keyer_features_and_options_fk_11.h"
-#elif defined(HARDWARE_MAPLE_MINI)//sp5iou 20180328
-  #include "keyer_features_and_options_maple_mini.h"
-#elif defined(HARDWARE_GENERIC_STM32F103C)//sp5iou 20180329
-  #include "keyer_features_and_options_generic_STM32F103C.h"
-#elif defined(HARDWARE_MORTTY)
-  #include "keyer_features_and_options_mortty.h"
-#elif defined(HARDWARE_MORTTY_REGULAR)
-  #include "keyer_features_and_options_mortty_regular.h"
-#elif defined(HARDWARE_MORTTY_REGULAR_WITH_POTENTIOMETER)
-  #include "keyer_features_and_options_mortty_regular_with_potentiometer.h"
-#elif defined(HARDWARE_MORTTY_SO2R)
-  #include "keyer_features_and_options_mortty_so2r.h"
-#elif defined(HARDWARE_MORTTY_SO2R_WITH_POTENTIOMETER)
-  #include "keyer_features_and_options_mortty_so2r_with_potentiometer.h"
-#elif defined(HARDWARE_K5BCQ)
-  #include "keyer_features_and_options_k5bcq.h"
-#elif defined(HARDWARE_MEGAKEYER)
-  #include "keyer_features_and_options_megakeyer.h"
-#elif defined(HARDWARE_TEST_EVERYTHING)
-  #include "keyer_features_and_options_test_everything.h"
-#elif defined(HARDWARE_YAACWK)
-  #include "keyer_features_and_options_yaacwk.h"
-#elif defined(HARDWARE_TEST)
-  #include "keyer_features_and_options_test.h"
-#elif defined(HARDWARE_IZ3GME)
-  #include "keyer_features_and_options_iz3gme.h"
-#elif defined(HARDWARE_YCCC_SO2R_MINI)
-  #include "keyer_features_and_options_yccc_so2r_mini.h"
-#else
-  #include "keyer_features_and_options.h"
-#endif
+// #if defined(HARDWARE_OPENCWKEYER_MK2)
+//   #include "keyer_features_and_options_opencwkeyer_mk2.h"
+// #elif defined(HARDWARE_NANOKEYER_REV_B)
+//   #include "keyer_features_and_options_nanokeyer_rev_b.h"
+// #elif defined(HARDWARE_NANOKEYER_REV_D)
+//   #include "keyer_features_and_options_nanokeyer_rev_d.h"
+// #elif defined(HARDWARE_OPEN_INTERFACE)
+//   #include "keyer_features_and_options_open_interface.h"
+// #elif defined(HARDWARE_TINYKEYER)
+//   #include "keyer_features_and_options_tinykeyer.h"
+// #elif defined(HARDWARE_FK_10)
+//   #include "keyer_features_and_options_fk_10.h"
+// #elif defined(HARDWARE_FK_11)
+//   #include "keyer_features_and_options_fk_11.h"
+// #elif defined(HARDWARE_MAPLE_MINI)//sp5iou 20180328
+//   #include "keyer_features_and_options_maple_mini.h"
+// #elif defined(HARDWARE_GENERIC_STM32F103C)//sp5iou 20180329
+//   #include "keyer_features_and_options_generic_STM32F103C.h"
+// #elif defined(HARDWARE_MORTTY)
+//   #include "keyer_features_and_options_mortty.h"
+// #elif defined(HARDWARE_MORTTY_REGULAR)
+//   #include "keyer_features_and_options_mortty_regular.h"
+// #elif defined(HARDWARE_MORTTY_REGULAR_WITH_POTENTIOMETER)
+//   #include "keyer_features_and_options_mortty_regular_with_potentiometer.h"
+// #elif defined(HARDWARE_MORTTY_SO2R)
+//   #include "keyer_features_and_options_mortty_so2r.h"
+// #elif defined(HARDWARE_MORTTY_SO2R_WITH_POTENTIOMETER)
+//   #include "keyer_features_and_options_mortty_so2r_with_potentiometer.h"
+// #elif defined(HARDWARE_K5BCQ)
+//   #include "keyer_features_and_options_k5bcq.h"
+// #elif defined(HARDWARE_MEGAKEYER)
+//   #include "keyer_features_and_options_megakeyer.h"
+// #elif defined(HARDWARE_TEST_EVERYTHING)
+//   #include "keyer_features_and_options_test_everything.h"
+// #elif defined(HARDWARE_YAACWK)
+//   #include "keyer_features_and_options_yaacwk.h"
+// #elif defined(HARDWARE_TEST)
+//   #include "keyer_features_and_options_test.h"
+// #elif defined(HARDWARE_IZ3GME)
+//   #include "keyer_features_and_options_iz3gme.h"
+// #elif defined(HARDWARE_YCCC_SO2R_MINI)
+//   #include "keyer_features_and_options_yccc_so2r_mini.h"
+// #else
+  #include "configuration/keyer_features_and_options.h"
+// #endif
 
-#include "keyer.h"
+#include "configuration/keyer.h"
 
 #ifdef FEATURE_EEPROM_E24C1024
   #include <E24C1024.h>
   #define EEPROM EEPROM1024
 #endif
 
-#include "keyer_dependencies.h"
-#include "keyer_debug.h"
+#include "configuration/keyer_dependencies.h"
+#include "configuration/keyer_debug.h"
 
-#if defined(HARDWARE_OPENCWKEYER_MK2)
-  #include "keyer_pin_settings_opencwkeyer_mk2.h"
-  #include "keyer_settings_opencwkeyer_mk2.h"
-#elif defined(HARDWARE_NANOKEYER_REV_B)
-  #include "keyer_pin_settings_nanokeyer_rev_b.h"
-  #include "keyer_settings_nanokeyer_rev_b.h"
-#elif defined(HARDWARE_NANOKEYER_REV_D)
-  #include "keyer_pin_settings_nanokeyer_rev_d.h"
-  #include "keyer_settings_nanokeyer_rev_d.h"
-#elif defined(HARDWARE_OPEN_INTERFACE)
-  #include "keyer_pin_settings_open_interface.h"
-  #include "keyer_settings_open_interface.h"
-#elif defined(HARDWARE_TINYKEYER)
-  #include "keyer_pin_settings_tinykeyer.h"
-  #include "keyer_settings_tinykeyer.h"
-#elif defined(HARDWARE_FK_10)
-  #include "keyer_pin_settings_fk_10.h"
-  #include "keyer_settings_fk_10.h"
-#elif defined(HARDWARE_FK_11)
-  #include "keyer_pin_settings_fk_11.h"
-  #include "keyer_settings_fk_11.h"
-#elif defined(HARDWARE_MAPLE_MINI)
-  #include "keyer_pin_settings_maple_mini.h"
-  #include "keyer_settings_maple_mini.h"
-#elif defined(HARDWARE_GENERIC_STM32F103C)
-  #include "keyer_pin_settings_generic_STM32F103C.h"
-  #include "keyer_settings_generic_STM32F103C.h"
-#elif defined(HARDWARE_MORTTY)
-  #include "keyer_pin_settings_mortty.h"
-  #include "keyer_settings_mortty.h"
-#elif defined(HARDWARE_MORTTY_REGULAR)
-  #include "keyer_pin_settings_mortty_regular.h"
-  #include "keyer_settings_mortty_regular.h"
-#elif defined(HARDWARE_MORTTY_REGULAR_WITH_POTENTIOMETER)
-  #include "keyer_pin_settings_mortty_regular_with_potentiometer.h"
-  #include "keyer_settings_mortty_regular_with_potentiometer.h"
-#elif defined(HARDWARE_MORTTY_SO2R)
-  #include "keyer_pin_settings_mortty_so2r.h"
-  #include "keyer_settings_mortty_so2r.h"
-#elif defined(HARDWARE_MORTTY_SO2R_WITH_POTENTIOMETER)
-  #include "keyer_pin_settings_mortty_so2r_with_potentiometer.h"
-  #include "keyer_settings_mortty_so2r_with_potentiometer.h"
-#elif defined(HARDWARE_K5BCQ)
-  #include "keyer_pin_settings_k5bcq.h"
-  #include "keyer_settings_k5bcq.h"
-#elif defined(HARDWARE_MEGAKEYER)
-  #include "keyer_pin_settings_megakeyer.h"
-  #include "keyer_settings_megakeyer.h"
-#elif defined(HARDWARE_TEST_EVERYTHING)
-  #include "keyer_pin_settings_test_everything.h"
-  #include "keyer_settings_test_everything.h"
-#elif defined(HARDWARE_YAACWK)
-  #include "keyer_pin_settings_yaacwk.h"
-  #include "keyer_settings_yaacwk.h"
-#elif defined(HARDWARE_TEST)
-  #include "keyer_pin_settings_test.h"
-  #include "keyer_settings_test.h"
-#elif defined(HARDWARE_IZ3GME)
-  #include "keyer_pin_settings_iz3gme.h"
-  #include "keyer_settings_iz3gme.h"
-#elif defined(HARDWARE_YCCC_SO2R_MINI)
-  #include "keyer_pin_settings_yccc_so2r_mini.h"
-  #include "keyer_settings_yccc_so2r_mini.h"
-#else
-  #include "keyer_pin_settings.h"
-  #include "keyer_settings.h"
-#endif
+// #if defined(HARDWARE_OPENCWKEYER_MK2)
+//   #include "keyer_pin_settings_opencwkeyer_mk2.h"
+//   #include "keyer_settings_opencwkeyer_mk2.h"
+// #elif defined(HARDWARE_NANOKEYER_REV_B)
+//   #include "keyer_pin_settings_nanokeyer_rev_b.h"
+//   #include "keyer_settings_nanokeyer_rev_b.h"
+// #elif defined(HARDWARE_NANOKEYER_REV_D)
+//   #include "keyer_pin_settings_nanokeyer_rev_d.h"
+//   #include "keyer_settings_nanokeyer_rev_d.h"
+// #elif defined(HARDWARE_OPEN_INTERFACE)
+//   #include "keyer_pin_settings_open_interface.h"
+//   #include "keyer_settings_open_interface.h"
+// #elif defined(HARDWARE_TINYKEYER)
+//   #include "keyer_pin_settings_tinykeyer.h"
+//   #include "keyer_settings_tinykeyer.h"
+// #elif defined(HARDWARE_FK_10)
+//   #include "keyer_pin_settings_fk_10.h"
+//   #include "keyer_settings_fk_10.h"
+// #elif defined(HARDWARE_FK_11)
+//   #include "keyer_pin_settings_fk_11.h"
+//   #include "keyer_settings_fk_11.h"
+// #elif defined(HARDWARE_MAPLE_MINI)
+//   #include "keyer_pin_settings_maple_mini.h"
+//   #include "keyer_settings_maple_mini.h"
+// #elif defined(HARDWARE_GENERIC_STM32F103C)
+//   #include "keyer_pin_settings_generic_STM32F103C.h"
+//   #include "keyer_settings_generic_STM32F103C.h"
+// #elif defined(HARDWARE_MORTTY)
+//   #include "keyer_pin_settings_mortty.h"
+//   #include "keyer_settings_mortty.h"
+// #elif defined(HARDWARE_MORTTY_REGULAR)
+//   #include "keyer_pin_settings_mortty_regular.h"
+//   #include "keyer_settings_mortty_regular.h"
+// #elif defined(HARDWARE_MORTTY_REGULAR_WITH_POTENTIOMETER)
+//   #include "keyer_pin_settings_mortty_regular_with_potentiometer.h"
+//   #include "keyer_settings_mortty_regular_with_potentiometer.h"
+// #elif defined(HARDWARE_MORTTY_SO2R)
+//   #include "keyer_pin_settings_mortty_so2r.h"
+//   #include "keyer_settings_mortty_so2r.h"
+// #elif defined(HARDWARE_MORTTY_SO2R_WITH_POTENTIOMETER)
+//   #include "keyer_pin_settings_mortty_so2r_with_potentiometer.h"
+//   #include "keyer_settings_mortty_so2r_with_potentiometer.h"
+// #elif defined(HARDWARE_K5BCQ)
+//   #include "keyer_pin_settings_k5bcq.h"
+//   #include "keyer_settings_k5bcq.h"
+// #elif defined(HARDWARE_MEGAKEYER)
+//   #include "keyer_pin_settings_megakeyer.h"
+//   #include "keyer_settings_megakeyer.h"
+// #elif defined(HARDWARE_TEST_EVERYTHING)
+//   #include "keyer_pin_settings_test_everything.h"
+//   #include "keyer_settings_test_everything.h"
+// #elif defined(HARDWARE_YAACWK)
+//   #include "keyer_pin_settings_yaacwk.h"
+//   #include "keyer_settings_yaacwk.h"
+// #elif defined(HARDWARE_TEST)
+//   #include "keyer_pin_settings_test.h"
+//   #include "keyer_settings_test.h"
+// #elif defined(HARDWARE_IZ3GME)
+//   #include "keyer_pin_settings_iz3gme.h"
+//   #include "keyer_settings_iz3gme.h"
+// #elif defined(HARDWARE_YCCC_SO2R_MINI)
+//   #include "keyer_pin_settings_yccc_so2r_mini.h"
+//   #include "keyer_settings_yccc_so2r_mini.h"
+// #else
+  #include "configuration/keyer_pin_settings.h"
+  #include "configuration/keyer_settings.h"
+// #endif
 
 #if defined(FEATURE_BUTTONS)
-  #include "src/buttonarray/buttonarray.h"
+  #include <buttonarray.h>
 #endif
 
 #if defined(FEATURE_SIDETONE_NEWTONE) && !defined(OPTION_SIDETONE_DIGITAL_OUTPUT_NO_SQUARE_WAVE)
@@ -249,7 +250,7 @@
 #endif
 
 #if defined(FEATURE_TRAINING_COMMAND_LINE_INTERFACE)
- // #include <BasicTerm.h>
+ // #include <BasicTerm/BasicTerm.h>
 #endif
 
 #if defined(FEATURE_CW_DECODER) && defined(OPTION_CW_DECODER_GOERTZEL_AUDIO_DETECTOR)
@@ -278,7 +279,7 @@
 #endif //defined(FEATURE_CW_COMPUTER_KEYBOARD)
 
 #if defined(FEATURE_4x4_KEYPAD)|| defined (FEATURE_3x4_KEYPAD)
-  #include <Keypad.h>
+  #include <Keypad/Keypad.h>
 #endif
 
 #if defined(FEATURE_SD_CARD_SUPPORT)
@@ -293,6 +294,92 @@
 
 
 #define memory_area_start (sizeof(configuration)+5)
+
+
+
+
+// Function prototypes (used in setup())
+void initialize_pins();
+void initialize_serial_ports();        // Goody - this is available for testing startup issues
+void initialize_debug_startup();       // Goody - this is available for testing startup issues
+void debug_blink();                    // Goody - this is available for testing startup issues
+void initialize_keyer_state();
+void initialize_potentiometer();
+void initialize_rotary_encoder();
+void initialize_default_modes();
+void initialize_watchdog();
+void initialize_ethernet_variables();
+#if defined(DEBUG_EEPROM_READ_SETTINGS)
+  void initialize_serial_ports();
+#endif
+void check_eeprom_for_initialization();
+void check_for_beacon_mode();
+void check_for_debug_modes();
+void initialize_analog_button_array();
+#if !defined(DEBUG_EEPROM_READ_SETTINGS)
+  void initialize_serial_ports();
+#endif
+void initialize_ps2_keyboard();
+void initialize_usb();
+void initialize_cw_keyboard();
+void initialize_display();
+void initialize_ethernet();
+void initialize_udp();
+void initialize_web_server();
+void initialize_sd_card();
+void initialize_debug_startup();
+
+void check_paddles();
+void service_dit_dah_buffers();
+void service_send_buffer(byte no_print);
+void check_ptt_tail();
+void check_for_dirty_configuration();
+void service_async_eeprom_write();
+void service_sending_pins();
+void service_millis_rollover();
+void service_keypad();
+void clear_send_buffer();
+int paddle_pin_read(int pin_to_read);
+void write_settings_to_eeprom(int initialize_eeprom);
+void check_dit_paddle();
+void check_dah_paddle();
+void switch_to_tx_silent(byte tx);
+void loop_element_lengths(float lengths, float additional_time_ms, int speed_wpm_in);
+void tx_and_sidetone_key (int state);
+void speed_change(int);
+void send_char(byte cw_char, byte omit_letterspace);
+void remove_from_send_buffer();
+void initialize_eeprom();
+void speed_set(int wpm_set);
+
+
+#if defined(FEATURE_SERIAL) && defined(FEATURE_COMMAND_LINE_INTERFACE)
+void serial_status(PRIMARY_SERIAL_CLS *);
+void check_serial();
+void process_serial_command(PRIMARY_SERIAL_CLS *);
+void serial_set_serial_number(PRIMARY_SERIAL_CLS *);
+void serial_set_sidetone_freq(PRIMARY_SERIAL_CLS *);
+void serial_set_dit_to_dah_ratio(PRIMARY_SERIAL_CLS *);
+void serial_qrss_mode();
+void serial_set_weighting(PRIMARY_SERIAL_CLS *);
+void serial_tune_command (PRIMARY_SERIAL_CLS *);
+void serial_wpm_set(PRIMARY_SERIAL_CLS *);
+void serial_switch_tx(PRIMARY_SERIAL_CLS *);
+void serial_change_wordspace(PRIMARY_SERIAL_CLS *);
+void send_serial_number(byte cut_numbers,int increment_serial_number,byte buffered_sending);
+int serial_get_number_input(byte places,int lower_limit, int upper_limit,PRIMARY_SERIAL_CLS * port_to_use,int raise_error_message);
+int convert_cw_number_to_ascii (long number_in);
+void display_serial_number_character(char snumchar);
+#endif
+
+#ifdef FEATURE_DISPLAY
+void lcd_clear();
+void clear_display_row(byte row_number);
+void lcd_center_print_timed_wpm();
+
+#endif
+
+
 
 // Variables and stuff
 struct config_t {  // 120 bytes total
@@ -933,217 +1020,7 @@ byte async_eeprom_write = 0;
 
 ---------------------------------------------------------------------------------------------------------*/
 
-void setup()
-{
 
-  initialize_pins();
-  // initialize_serial_ports();        // Goody - this is available for testing startup issues
-  // initialize_debug_startup();       // Goody - this is available for testing startup issues
-  // debug_blink();                    // Goody - this is available for testing startup issues
-  initialize_keyer_state();
-  initialize_potentiometer();
-  initialize_rotary_encoder();
-  initialize_default_modes();
-  initialize_watchdog();
-  initialize_ethernet_variables();
-  #if defined(DEBUG_EEPROM_READ_SETTINGS)
-    initialize_serial_ports();
-  #endif
-  check_eeprom_for_initialization();
-  check_for_beacon_mode();
-  check_for_debug_modes();
-  initialize_analog_button_array();
-  #if !defined(DEBUG_EEPROM_READ_SETTINGS)
-    initialize_serial_ports();
-  #endif
-  initialize_ps2_keyboard();
-  initialize_usb();
-  initialize_cw_keyboard();
-  initialize_display();
-  initialize_ethernet();
-  initialize_udp();
-  initialize_web_server();
-  initialize_sd_card();
-  initialize_debug_startup();
-
-}
-
-// --------------------------------------------------------------------------------------------
-
-void loop()
-{
-
-  // this is where the magic happens
-
-
-  #ifdef OPTION_WATCHDOG_TIMER
-    wdt_reset();
-  #endif  //OPTION_WATCHDOG_TIMER
-
-  #if defined(FEATURE_BEACON) && defined(FEATURE_MEMORIES)
-    if (keyer_machine_mode == BEACON) {
-      delay(201);                                                                   // an odd duration delay before we enter BEACON mode
-      #ifdef OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
-        unsigned int time_to_delay = configuration.memory_repeat_time - configuration.ptt_tail_time[configuration.current_tx - 1];
-      #endif                                                                        // OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
-
-      while (keyer_machine_mode == BEACON) {                                        // if we're in beacon mode, just keep playing memory 1
-        if (!send_buffer_bytes) {
-          add_to_send_buffer(SERIAL_SEND_BUFFER_MEMORY_NUMBER);
-          add_to_send_buffer(0);
-        }
-        service_send_buffer(PRINTCHAR);
-        #ifdef OPTION_BEACON_MODE_PTT_TAIL_TIME
-          delay(configuration.ptt_tail_time[configuration.current_tx - 1]);         // after memory 1 has played, this holds the PTT line active for the ptt tail time of the current tx
-          check_ptt_tail();                                                         // this resets things so that the ptt line will go high during the next playout
-          digitalWrite (configuration.current_ptt_line, ptt_line_inactive_state);   // forces the ptt line of the current tx to be inactive
-        #endif                                                                      // OPTION_BEACON_MODE_PTT_TAIL_TIME
-
-        #ifdef FEATURE_SERIAL
-          check_serial();
-        #endif
-
-        #ifdef OPTION_WATCHDOG_TIMER
-          wdt_reset();
-        #endif                                                                      // OPTION_WATCHDOG_TIMER
-
-        #ifdef OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
-          if (time_to_delay > 0) delay(time_to_delay);                              // this provdes a delay between succesive playouts of the memory contents
-        #endif                                                                      // OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
-      }                                                                             // end while (keyer_machine_mode == BEACON)
-    }                                                                               // end if (keyer_machine_mode == BEACON)
-  #endif                                                                            // defined(FEATURE_BEACON) && defined(FEATURE_MEMORIES)
-
-  #if defined(FEATURE_BEACON_SETTING)
-    service_beacon();
-  #endif
-
-  if (keyer_machine_mode == KEYER_NORMAL) {
-    #ifdef FEATURE_BUTTONS
-      check_buttons();
-    #endif
-    check_paddles();
-    service_dit_dah_buffers();
-
-    #if defined(FEATURE_SERIAL)
-      check_serial();
-      check_paddles();
-      service_dit_dah_buffers();
-    #endif
-
-    service_send_buffer(PRINTCHAR);
-    check_ptt_tail();
-
-    #ifdef FEATURE_POTENTIOMETER
-      check_potentiometer();
-    #endif
-
-    #ifdef FEATURE_ROTARY_ENCODER
-      check_rotary_encoder();
-    #endif
-
-    #ifdef FEATURE_PS2_KEYBOARD
-      check_ps2_keyboard();
-    #endif
-
-    #if defined(FEATURE_USB_KEYBOARD) || defined(FEATURE_USB_MOUSE)
-      service_usb();
-    #endif
-
-    check_for_dirty_configuration();
-
-    #ifdef FEATURE_DEAD_OP_WATCHDOG
-      check_for_dead_op();
-    #endif
-
-    #ifdef FEATURE_MEMORIES
-      check_memory_repeat();
-    #endif
-
-    #ifdef FEATURE_DISPLAY
-      check_paddles();
-      service_send_buffer(PRINTCHAR);
-      service_display();
-    #endif
-
-    #ifdef FEATURE_CW_DECODER
-      service_cw_decoder();
-    #endif
-
-    #ifdef FEATURE_LED_RING
-      update_led_ring();
-    #endif
-
-    #ifdef FEATURE_SLEEP
-      check_sleep();
-    #endif
-
-    #ifdef FEATURE_LCD_BACKLIGHT_AUTO_DIM
-      check_backlight();
-    #endif
-
-    #ifdef FEATURE_PTT_INTERLOCK
-      service_ptt_interlock();
-    #endif
-
-    #ifdef FEATURE_PADDLE_ECHO
-      service_paddle_echo();
-    #endif
-
-    #ifdef FEATURE_STRAIGHT_KEY
-      service_straight_key();
-    #endif
-
-    #if defined(FEATURE_COMPETITION_COMPRESSION_DETECTION)
-      service_competition_compression_detection();
-    #endif
-
-    #if defined(OPTION_WINKEY_SEND_BREAKIN_STATUS_BYTE) && defined(FEATURE_WINKEY_EMULATION)
-      service_winkey_breakin();
-    #endif
-
-    #if defined(FEATURE_ETHERNET)
-      check_for_network_restart();
-      #if defined(FEATURE_WEB_SERVER)
-        service_web_server();
-      #endif
-      #if defined(FEATURE_INTERNET_LINK)
-        service_udp_send_buffer();
-        service_udp_receive();
-        service_internet_link_udp_receive_buffer();
-      #endif
-    #endif
-
-    #ifdef FEATURE_SIDETONE_SWITCH
-      check_sidetone_switch();
-    #endif
-
-    #if defined(FEATURE_4x4_KEYPAD) || defined(FEATURE_3x4_KEYPAD)
-      service_keypad();
-    #endif
-
-    #ifdef FEATURE_SD_CARD_SUPPORT
-      service_sd_card();
-    #endif
-
-    #ifdef FEATURE_SEQUENCER
-      check_sequencer_tail_time();
-    #endif
-
-    #ifdef FEATURE_SO2R_SWITCHES
-      so2r_switches();
-    #endif
-
-    service_async_eeprom_write();
-
-  }
-
-  service_sending_pins();
-
-  service_millis_rollover();
-
-
-}
 
 // Subroutines --------------------------------------------------------------------------------------------
 
@@ -7619,7 +7496,7 @@ void initialize_analog_button_array() {
     button_array.Add(8,5);
     button_array.Add(9,4);
 
-  #elseif defined(OPTION_DFROBOT_LCD_COMMAND_BUTTONS)
+  #elif defined(OPTION_DFROBOT_LCD_COMMAND_BUTTONS)
     button_array.Add(0,dfrobot_btnSELECT, dfrobot_btnLEFT_analog, dfrobot_btnSELECT_analog);
     button_array.Add(1,dfrobot_btnLEFT, dfrobot_btnDOWN_analog, dfrobot_btnLEFT_analog);
     button_array.Add(2,dfrobot_btnDOWN, dfrobot_btnUP_analog, dfrobot_btnDOWN_analog);
@@ -21438,3 +21315,224 @@ void update_time(){
 #endif // FEATURE_CLOCK
 // --------------------------------------------------------------
 */
+
+
+
+void setup()
+{
+  // _delay_ms(500);
+  // Serial.begin(115200);
+  // Serial.println("hello!!!");
+
+  // return;
+
+
+  initialize_pins();
+  initialize_serial_ports();        // Goody - this is available for testing startup issues
+  initialize_debug_startup();       // Goody - this is available for testing startup issues
+  debug_blink();                    // Goody - this is available for testing startup issues
+  initialize_keyer_state();
+  initialize_potentiometer();
+  initialize_rotary_encoder();
+  initialize_default_modes();
+  initialize_watchdog();
+  initialize_ethernet_variables();
+  #if defined(DEBUG_EEPROM_READ_SETTINGS)
+    initialize_serial_ports();
+  #endif
+  check_eeprom_for_initialization();
+  check_for_beacon_mode();
+  check_for_debug_modes();
+  initialize_analog_button_array();
+  #if !defined(DEBUG_EEPROM_READ_SETTINGS)
+    initialize_serial_ports();
+  #endif
+  initialize_ps2_keyboard();
+  initialize_usb();
+  initialize_cw_keyboard();
+  initialize_display();
+  initialize_ethernet();
+  initialize_udp();
+  initialize_web_server();
+  initialize_sd_card();
+  initialize_debug_startup();
+
+}
+
+// --------------------------------------------------------------------------------------------
+
+void loop()
+{
+  // Serial.println("cq....");
+  // _delay_ms(1000);
+  // return;
+
+  // this is where the magic happens
+
+
+  #ifdef OPTION_WATCHDOG_TIMER
+    wdt_reset();
+  #endif  //OPTION_WATCHDOG_TIMER
+
+  #if defined(FEATURE_BEACON) && defined(FEATURE_MEMORIES)
+    if (keyer_machine_mode == BEACON) {
+      delay(201);                                                                   // an odd duration delay before we enter BEACON mode
+      #ifdef OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
+        unsigned int time_to_delay = configuration.memory_repeat_time - configuration.ptt_tail_time[configuration.current_tx - 1];
+      #endif                                                                        // OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
+
+      while (keyer_machine_mode == BEACON) {                                        // if we're in beacon mode, just keep playing memory 1
+        if (!send_buffer_bytes) {
+          add_to_send_buffer(SERIAL_SEND_BUFFER_MEMORY_NUMBER);
+          add_to_send_buffer(0);
+        }
+        service_send_buffer(PRINTCHAR);
+        #ifdef OPTION_BEACON_MODE_PTT_TAIL_TIME
+          delay(configuration.ptt_tail_time[configuration.current_tx - 1]);         // after memory 1 has played, this holds the PTT line active for the ptt tail time of the current tx
+          check_ptt_tail();                                                         // this resets things so that the ptt line will go high during the next playout
+          digitalWrite (configuration.current_ptt_line, ptt_line_inactive_state);   // forces the ptt line of the current tx to be inactive
+        #endif                                                                      // OPTION_BEACON_MODE_PTT_TAIL_TIME
+
+        #ifdef FEATURE_SERIAL
+          check_serial();
+        #endif
+
+        #ifdef OPTION_WATCHDOG_TIMER
+          wdt_reset();
+        #endif                                                                      // OPTION_WATCHDOG_TIMER
+
+        #ifdef OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
+          if (time_to_delay > 0) delay(time_to_delay);                              // this provdes a delay between succesive playouts of the memory contents
+        #endif                                                                      // OPTION_BEACON_MODE_MEMORY_REPEAT_TIME
+      }                                                                             // end while (keyer_machine_mode == BEACON)
+    }                                                                               // end if (keyer_machine_mode == BEACON)
+  #endif                                                                            // defined(FEATURE_BEACON) && defined(FEATURE_MEMORIES)
+
+  #if defined(FEATURE_BEACON_SETTING)
+    service_beacon();
+  #endif
+
+  if (keyer_machine_mode == KEYER_NORMAL) {
+    #ifdef FEATURE_BUTTONS
+      check_buttons();
+    #endif
+    check_paddles();
+    service_dit_dah_buffers();
+
+    #if defined(FEATURE_SERIAL)
+      check_serial();
+      check_paddles();
+      service_dit_dah_buffers();
+    #endif
+
+    service_send_buffer(PRINTCHAR);
+    check_ptt_tail();
+
+    #ifdef FEATURE_POTENTIOMETER
+      check_potentiometer();
+    #endif
+
+    #ifdef FEATURE_ROTARY_ENCODER
+      check_rotary_encoder();
+    #endif
+
+    #ifdef FEATURE_PS2_KEYBOARD
+      check_ps2_keyboard();
+    #endif
+
+    #if defined(FEATURE_USB_KEYBOARD) || defined(FEATURE_USB_MOUSE)
+      service_usb();
+    #endif
+
+    check_for_dirty_configuration();
+
+    #ifdef FEATURE_DEAD_OP_WATCHDOG
+      check_for_dead_op();
+    #endif
+
+    #ifdef FEATURE_MEMORIES
+      check_memory_repeat();
+    #endif
+
+    #ifdef FEATURE_DISPLAY
+      check_paddles();
+      service_send_buffer(PRINTCHAR);
+      service_display();
+    #endif
+
+    #ifdef FEATURE_CW_DECODER
+      service_cw_decoder();
+    #endif
+
+    #ifdef FEATURE_LED_RING
+      update_led_ring();
+    #endif
+
+    #ifdef FEATURE_SLEEP
+      check_sleep();
+    #endif
+
+    #ifdef FEATURE_LCD_BACKLIGHT_AUTO_DIM
+      check_backlight();
+    #endif
+
+    #ifdef FEATURE_PTT_INTERLOCK
+      service_ptt_interlock();
+    #endif
+
+    #ifdef FEATURE_PADDLE_ECHO
+      service_paddle_echo();
+    #endif
+
+    #ifdef FEATURE_STRAIGHT_KEY
+      service_straight_key();
+    #endif
+
+    #if defined(FEATURE_COMPETITION_COMPRESSION_DETECTION)
+      service_competition_compression_detection();
+    #endif
+
+    #if defined(OPTION_WINKEY_SEND_BREAKIN_STATUS_BYTE) && defined(FEATURE_WINKEY_EMULATION)
+      service_winkey_breakin();
+    #endif
+
+    #if defined(FEATURE_ETHERNET)
+      check_for_network_restart();
+      #if defined(FEATURE_WEB_SERVER)
+        service_web_server();
+      #endif
+      #if defined(FEATURE_INTERNET_LINK)
+        service_udp_send_buffer();
+        service_udp_receive();
+        service_internet_link_udp_receive_buffer();
+      #endif
+    #endif
+
+    #ifdef FEATURE_SIDETONE_SWITCH
+      check_sidetone_switch();
+    #endif
+
+    #if defined(FEATURE_4x4_KEYPAD) || defined(FEATURE_3x4_KEYPAD)
+      service_keypad();
+    #endif
+
+    #ifdef FEATURE_SD_CARD_SUPPORT
+      service_sd_card();
+    #endif
+
+    #ifdef FEATURE_SEQUENCER
+      check_sequencer_tail_time();
+    #endif
+
+    #ifdef FEATURE_SO2R_SWITCHES
+      so2r_switches();
+    #endif
+
+    service_async_eeprom_write();
+
+  }
+
+  service_sending_pins();
+
+  service_millis_rollover();
+}

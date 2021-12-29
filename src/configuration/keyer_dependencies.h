@@ -26,6 +26,7 @@
 #endif
 
 #if defined(FEATURE_WEB_SERVER) || defined(FEATURE_INTERNET_LINK)
+  #error "ths should nod be compiled!"
   #define FEATURE_ETHERNET
 #endif
 
