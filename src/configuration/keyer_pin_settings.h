@@ -4,8 +4,8 @@
 
 #define paddle_left 2
 #define paddle_right 5
-#define tx_key_line_1 11       // (high = key down/tx on)
-#define tx_key_line_2 12
+#define tx_key_line_1 12       // (high = key down/tx on)
+#define tx_key_line_2 11
 #define tx_key_line_3 0
 #define tx_key_line_4 0
 #define tx_key_line_5 0
