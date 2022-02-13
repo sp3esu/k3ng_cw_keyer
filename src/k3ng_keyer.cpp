@@ -384,6 +384,9 @@ void command_speed_set(int wpm_set);
 void serial_set_pot_low_high(PRIMARY_SERIAL_CLS * port_to_use);
 #endif
 
+#ifdef FEATURE_WINKEY_EMULATION
+void winkey_port_write(byte byte_to_send,byte override_filter);
+#endif
 
 
 // Variables and stuff
