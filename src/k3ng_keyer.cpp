@@ -407,6 +407,19 @@ int convert_cw_number_to_ascii (long number_in);
 void display_serial_number_character(char snumchar);
 #endif
 
+#if defined(FEATURE_PS2_KEYBOARD)
+void sidetone_adj(int hz);
+void adjust_dah_to_dit_ratio(int adjustment);
+void speed_set(int wpm_set);
+void ps2_usb_keyboard_play_memory(byte memory_number);
+void ptt_unkey();
+void ps2_keyboard_program_memory(byte memory_number);
+void put_serial_number_in_send_buffer();
+void ptt_key();
+int ps2_keyboard_get_number_input(byte places,int lower_limit, int upper_limit);
+int uppercase (int charbytein);
+#endif
+
 #ifdef FEATURE_DISPLAY
 void lcd_clear();
 void clear_display_row(byte row_number);
