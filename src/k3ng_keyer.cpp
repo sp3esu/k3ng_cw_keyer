@@ -352,6 +352,10 @@ void remove_from_send_buffer();
 void initialize_eeprom();
 void speed_set(int wpm_set);
 
+#if defined(FEATURE_BUTTONS) 
+byte analogbuttonread(byte button_number);
+#endif
+
 
 #if defined(FEATURE_SERIAL) && defined(FEATURE_COMMAND_LINE_INTERFACE)
 void serial_status(PRIMARY_SERIAL_CLS *);
