@@ -356,6 +356,37 @@ void speed_set(int wpm_set);
 byte analogbuttonread(byte button_number);
 #endif
 
+#if defined(FEATURE_COMMAND_MODE)
+void boop_beep();
+void command_sidetone_freq_adj();
+void command_dah_to_dit_ratio_adjust();
+void boop();
+void command_weighting_adjust();
+void command_speed_mode(byte mode);
+void beep();
+void command_keying_compensation_adjust();
+void command_set_serial_number();
+void command_tuning_mode();
+void beep_boop();
+#endif
+
+#ifdef FEATURE_MEMORIES
+void add_to_send_buffer(byte incoming_serial_byte);
+void initialize_eeprom_memories();
+void check_the_memory_buttons();
+void command_program_memory();
+void command_set_mem_repeat_delay();
+byte play_memory(byte memory_number);
+void program_memory(int memory_number);
+int memory_start(byte memory_number);
+void repeat_play_memory(PRIMARY_SERIAL_CLS * port_to_use);
+void serial_set_memory_repeat(PRIMARY_SERIAL_CLS * port_to_use);
+void serial_play_memory(byte memory_number);
+void serial_program_memory(PRIMARY_SERIAL_CLS * port_to_use);
+void serial_status_memories(PRIMARY_SERIAL_CLS * port_to_use);
+int memory_end(byte memory_number);
+#endif
+
 
 #if defined(FEATURE_SERIAL) && defined(FEATURE_COMMAND_LINE_INTERFACE)
 void serial_status(PRIMARY_SERIAL_CLS *);
