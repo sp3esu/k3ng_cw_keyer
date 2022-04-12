@@ -436,6 +436,10 @@ void serial_set_pot_low_high(PRIMARY_SERIAL_CLS * port_to_use);
 void winkey_port_write(byte byte_to_send,byte override_filter);
 #endif
 
+#ifdef FEATURE_POTENTIOMETER
+void check_potentiometer();
+#endif
+
 
 // Variables and stuff
 struct config_t {  // 120 bytes total
