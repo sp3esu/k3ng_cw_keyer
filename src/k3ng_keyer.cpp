@@ -356,14 +356,15 @@ void speed_set(int wpm_set);
 byte analogbuttonread(byte button_number);
 #endif
 
-#if defined(FEATURE_COMMAND_MODE)
 void boop_beep();
+void boop();
+void beep();
+
+#if defined(FEATURE_COMMAND_MODE)
 void command_sidetone_freq_adj();
 void command_dah_to_dit_ratio_adjust();
-void boop();
 void command_weighting_adjust();
 void command_speed_mode(byte mode);
-void beep();
 void command_keying_compensation_adjust();
 void command_set_serial_number();
 void command_tuning_mode();
