@@ -1,5 +1,16 @@
-Recent Update History
+SP3ESU Mods:
 
+2022.06.19:
+  - Poprawiona ilość przycisków
+  - Zmienione powitanie
+
+Before:
+  - SP3FRV version (separate branch)
+  - SP3LPT version (separate branch)
+
+=====================
+Recent Update History    
+    
     2.2.2015040402 More work on ARDUINO_SAM_DUE (documented)
 
     2.2.2015040501 Fixed bug with O command not working when any display feature was compiled in
