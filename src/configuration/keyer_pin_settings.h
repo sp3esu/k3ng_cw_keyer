@@ -3,7 +3,7 @@
 #define keyer_pin_settings_h
 
 #define paddle_left 2
-#define paddle_right 5
+#define paddle_right 3
 #define tx_key_line_1 12       // (high = key down/tx on)
 #define tx_key_line_2 11
 #define tx_key_line_3 0
@@ -75,8 +75,8 @@ FEATURE_SIDETONE_SWITCH
 // rotary encoder pins and options - rotary encoder code from Jim Balls M0CKE
 #ifdef FEATURE_ROTARY_ENCODER
   #define OPTION_ENCODER_HALF_STEP_MODE     // Half-step mode?
-  #define rotary_pin1 0                      // CW Encoder Pin
-  #define rotary_pin2 0                    // CCW Encoder Pin
+  #define rotary_pin1 6                      // CW Encoder Pin
+  #define rotary_pin2 7                    // CCW Encoder Pin
   #define OPTION_ENCODER_ENABLE_PULLUPS     // define to enable weak pullups.
 #endif //FEATURE_ROTARY_ENCODER
 
@@ -100,7 +100,7 @@ FEATURE_SIDETONE_SWITCH
 // FEATURE_CW_DECODER & OPTION_CW_DECODER_GOERTZEL_AUDIO_DETECTOR
 // See https://github.com/k3ng/k3ng_cw_keyer/wiki/385-Feature:-CW-Decoder for details
 #define cw_decoder_pin 0             // This is for use with external decoding hardware
-#define cw_decoder_audio_input_pin A11 // This is for audio detection decoding using OPTION_CW_DECODER_GOERTZEL_AUDIO_DETECTOR; this must be an analog pin!
+#define cw_decoder_audio_input_pin A2 // This is for audio detection decoding using OPTION_CW_DECODER_GOERTZEL_AUDIO_DETECTOR; this must be an analog pin!
 #define cw_decoder_indicator 24       // Output - goes HIGH when cw tone is detected by OPTION_CW_DECODER_GOERTZEL_AUDIO_DETECTOR
 
 #if defined(FEATURE_COMPETITION_COMPRESSION_DETECTION)

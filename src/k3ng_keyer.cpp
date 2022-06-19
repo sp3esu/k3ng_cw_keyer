@@ -369,6 +369,7 @@ void command_keying_compensation_adjust();
 void command_set_serial_number();
 void command_tuning_mode();
 void beep_boop();
+void speed_change_command_mode(int change);
 #endif
 
 #ifdef FEATURE_MEMORIES
