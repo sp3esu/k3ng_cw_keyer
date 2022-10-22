@@ -441,6 +441,10 @@ void check_potentiometer();
 #endif
 
 
+#ifdef OPTION_PS2_KEYBOARD_RESET
+void ps2int_write();
+#endif
+
 // Variables and stuff
 struct config_t {  // 120 bytes total
 
