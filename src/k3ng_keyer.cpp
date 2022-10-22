@@ -437,6 +437,10 @@ void winkey_port_write(byte byte_to_send,byte override_filter);
 #endif
 
 
+#ifdef OPTION_PS2_KEYBOARD_RESET
+void ps2int_write();
+#endif
+
 // Variables and stuff
 struct config_t {  // 120 bytes total
 
