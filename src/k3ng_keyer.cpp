@@ -16870,6 +16870,10 @@ void initialize_ps2_keyboard(){
 
   #ifdef FEATURE_PS2_KEYBOARD
 
+  // SP3ESU: for some reason keyboard is not starting properly. Resetting program (eg. via connecting serial monitor) is solving the issue
+  // Adding some time on the initialization to wait for electric part to be ready for comunication
+  delay(500);
+
   #ifdef OPTION_PS2_KEYBOARD_RESET             // code contributed by Bill, W9BEL
   attachInterrupt(1, ps2int_write, FALLING);
   digitalWrite(ps2_keyboard_data, LOW); // pullup off
@@ -16877,6 +16881,8 @@ void initialize_ps2_keyboard(){
   delay(200);
   #endif //OPTION_PS2_KEYBOARD_RESET
 
+  // SP3ESU: see comment above
+  delay(500);
 
   keyboard.begin(ps2_keyboard_data, ps2_keyboard_clock);
   #endif //FEATURE_PS2_KEYBOARD
